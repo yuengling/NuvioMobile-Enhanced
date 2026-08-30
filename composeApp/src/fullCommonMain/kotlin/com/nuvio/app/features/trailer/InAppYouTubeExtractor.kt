@@ -15,7 +15,7 @@ internal const val TRAILER_REQUEST_TIMEOUT_MS = 20_000L
 
 private const val EXTRACTOR_TIMEOUT_MS = 30_000L
 
-private val TOKEN_FREE_CLIENTS = listOf("visionos", "android_vr")
+private val TOKEN_FREE_CLIENTS = listOf("visionos", "android_sdkless")
 
 private const val TOKEN_FREE_PROGRESSIVE_ITAG = 18
 
