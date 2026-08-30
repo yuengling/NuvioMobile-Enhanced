@@ -325,9 +325,9 @@ class InAppYouTubeExtractor {
         }
 
         val rejectedClients = mutableSetOf<String>()
-        resolveAdaptive(adaptiveVideo, adaptiveAudio, rejectedClients)?.let { return it }
         resolveProgressive(progressive, rejectedClients)?.let { return it }
         resolveHls(manifestUrls, rejectedClients)?.let { return it }
+        resolveAdaptive(adaptiveVideo, adaptiveAudio, rejectedClients)?.let { return it }
 
         log.w { "All candidates rejected - googlevideo likely requires a GVS PO token for every client" }
         return null
