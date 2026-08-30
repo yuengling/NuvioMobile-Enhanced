@@ -95,6 +95,22 @@ private val CLIENTS = listOf(
         priority = 0,
     ),
     YouTubeClient(
+        key = "android_sdkless",
+        id = "3",
+        version = "20.10.35",
+        userAgent = "com.google.android.youtube/20.10.35 (Linux; U; Android 14; en_US) gzip",
+        context = jsonObjectOf(
+            "clientName" to "ANDROID",
+            "clientVersion" to "20.10.35",
+            "osName" to "Android",
+            "osVersion" to "14",
+            "platform" to "MOBILE",
+            "hl" to "en",
+            "gl" to "US",
+        ),
+        priority = 1,
+    ),
+    YouTubeClient(
         key = "android_vr",
         id = "28",
         version = "1.65.10",
@@ -112,7 +128,7 @@ private val CLIENTS = listOf(
             "hl" to "en",
             "gl" to "US",
         ),
-        priority = 1,
+        priority = 2,
     ),
     YouTubeClient(
         key = "android",
@@ -129,7 +145,7 @@ private val CLIENTS = listOf(
             "hl" to "en",
             "gl" to "US",
         ),
-        priority = 2,
+        priority = 3,
     ),
     YouTubeClient(
         key = "ios",
@@ -146,7 +162,7 @@ private val CLIENTS = listOf(
             "hl" to "en",
             "gl" to "US",
         ),
-        priority = 3,
+        priority = 4,
     ),
 )
 
