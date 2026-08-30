@@ -26,6 +26,8 @@ private const val PROBE_TIER_TIMEOUT_MS = 3_000L
 internal object TrailerExtractionPlatform {
     val defaultHeaders: Map<String, String> = mapOf(
         "accept-language" to "en-US,en;q=0.9",
+        "origin" to "https://www.youtube.com",
+        "referer" to "https://www.youtube.com/",
         "user-agent" to
             "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 " +
             "(KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1",
@@ -73,25 +75,12 @@ internal object TrailerExtractionPlatform {
             body = bodyText,
         )
     }
-
+    
     suspend fun resolvePlayableUrl(url: String): String? = withContext(Dispatchers.Default) {
         if (!url.contains("googlevideo.com")) return@withContext url
-
-        val candidates = buildHostCandidates(url)
-        if (candidates.size == 1) {
-            return@withContext if (isUrlReachable(candidates[0])) candidates[0] else null
-        }
-
-        coroutineScope {
-            val probes = candidates.map { candidate ->
-                async { if (isUrlReachable(candidate)) candidate else null }
-            }
-            withTimeoutOrNull(PROBE_TIER_TIMEOUT_MS) {
-                probes.awaitAll().firstOrNull { !it.isNullOrBlank() }
-            }
-        }
+        if (isUrlReachable(url)) url else null
     }
-
+    
     private fun buildHostCandidates(url: String): List<String> {
         val host = getHost(url) ?: return listOf(url)
         val mnParam = getQueryParameter(url, "mn") ?: return listOf(url)
@@ -118,13 +107,15 @@ internal object TrailerExtractionPlatform {
                 headers = mapOf(
                     "range" to "bytes=0-0",
                     "user-agent" to defaultHeaders.getValue("user-agent"),
+                    "origin" to "https://www.youtube.com",
+                    "referer" to "https://www.youtube.com/",
                 ),
                 body = null,
                 timeoutMillis = PROBE_TIMEOUT_MS,
             )
         }.getOrNull() ?: return false
 
-        return response.status in 200..299
+        return response.status in 200..399
     }
 
     private fun getHost(url: String): String? {
